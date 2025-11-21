@@ -1,0 +1,8 @@
+﻿# Ignore OS / editor / phpMyAdmin dumps
+*.log
+*.sql
+db_data/
+vendor/
+.idea/
+.vscode/
+*.env
