@@ -42,4 +42,4 @@ jobs:
         run: php -l app/index.php
 
       - name: Build Docker image (CI test)
-        run: docker build -t taskmanager-ci ./app
+        run: docker build -t php-app -f app/Dockerfile app
