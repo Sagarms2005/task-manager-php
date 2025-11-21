@@ -1,0 +1,45 @@
+﻿name: CI - PHP Build & Basic Checks
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpass
+          MYSQL_DATABASE: taskdb
+          MYSQL_USER: tmuser
+          MYSQL_PASSWORD: tmpass
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: pdo_mysql
+
+      - name: Show PHP version
+        run: php -v
+
+      - name: Run PHP lint (syntax check)
+        run: php -l app/index.php
+
+      - name: Build Docker image (CI test)
+        run: docker build -t taskmanager-ci ./app
