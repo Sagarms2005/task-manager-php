@@ -1,4 +1,4 @@
-﻿name: CI - PHP Build & Basic Checks
+name: CI - PHP Build & Basic Checks
 
 on:
   push:
